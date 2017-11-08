@@ -1,9 +1,6 @@
 defmodule Servy.Handler do
-
-  def handle, do: handle("/aaa")
-
-  def handle(path) do
-    request(path)
+  def handle(request) do
+    request
     |> parse
     |> log
     |> route
@@ -28,7 +25,7 @@ defmodule Servy.Handler do
 
   def route(conv, "GET", "/bbb"), do: %{ conv | status: 200, resp_body: "Crap van BBB" }
 
-  def route(conv, "GET", "/bbb/" <> i), do: %{ conv | status: 200, resp_body: "Individuele BBB, nummertje #{i}" }
+  def route(conv, "GET", "/bbb/" <> id), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: Kjansebear nr#{id}." }
 
   def route(conv, _method, path), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
 
@@ -39,16 +36,6 @@ defmodule Servy.Handler do
     Content-Length: #{String.length(conv.resp_body)}
 
     #{conv.resp_body}
-    """
-  end
-
-  def request(path \\ "/aaa", method \\ "GET") do
-    """
-    #{method} #{path} HTTP/1.1
-    Host: example.com
-    User-agent: ExampleBrowser/1.0
-    Accept: */*
-
     """
   end
 
@@ -63,3 +50,12 @@ defmodule Servy.Handler do
   end
 
 end
+
+request = """
+GET /aaa HTTP/1.1
+Host: example.com
+User-agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+IO.puts Servy.Handler.handle(request)
