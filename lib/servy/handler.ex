@@ -26,14 +26,22 @@ defmodule Servy.Handler do
   def route(%{ method: "GET", path: "/bbb/" <> id } = conv), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: KjanseBEER nr#{id}.  " }
 
   def route(%{ method: "GET", path: "/about" } = conv) do
-    pages_path = Path.expand("../../pages", __DIR__)
-    file = Path.join(pages_path, "about.html")
+    Path.expand("../../pages", __DIR__)
+    |> Path.join("about.html")
+    |> File.read
+    |> handle_read(conv)
+  end
 
-    case File.read(file) do
-      { :ok, contents }   -> %{ conv | status: 200, resp_body: contents }
-      { :error, :enoent } -> %{ conv | status: 404, resp_body: "File not found nigga" }
-      { :error, reason }  -> %{ conv | status: 500, resp_body: "Something went completely wrong. Wanna know why? Here: #{reason}" }
-    end
+  def handle_read({ :ok, contents }, conv) do
+    %{ conv | status: 200, resp_body: contents }
+  end
+
+  def handle_read({ :error, :enoent }, conv) do
+    %{ conv | status: 404, resp_body: "File not found niggaboi" }
+  end
+
+  def handle_read({ :error, reason }, conv) do
+    %{ conv | status: 500, resp_body: "Something went completely wrong. Wanna know why? Here: #{reason}" }
   end
 
   def route(%{ path: path } = conv), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
