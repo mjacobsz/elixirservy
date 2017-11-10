@@ -19,15 +19,13 @@ defmodule Servy.Handler do
 
   def log(conv), do: IO.inspect conv
 
-  def route(conv), do: route(conv, conv.method, conv.path)
+  def route(%{ method: "GET", path: "/aaa" } = conv), do: %{ conv | status: 200, resp_body: "Crap van AAA" }
 
-  def route(conv, "GET", "/aaa"), do: %{ conv | status: 200, resp_body: "Crap van AAA" }
+  def route(%{ method: "GET", path: "/bbb" } = conv), do: %{ conv | status: 200, resp_body: "Crap van BBB" }
 
-  def route(conv, "GET", "/bbb"), do: %{ conv | status: 200, resp_body: "Crap van BBB" }
+  def route(%{ method: "GET", path: "/bbb/" <> id } = conv), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: KjanseBEER nr#{id}.  " }
 
-  def route(conv, "GET", "/bbb/" <> id), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: Kjansebear nr#{id}." }
-
-  def route(conv, _method, path), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
+  def route(%{ path: path } = conv), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
 
   def format_response(conv) do
     """
