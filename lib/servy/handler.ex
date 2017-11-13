@@ -8,10 +8,28 @@ defmodule Servy.Handler do
   def handle(request) do
     request
     |> parse
+    |> rewrite_path
     |> log
     |> route
+    |> track
     |> format_response
   end
+
+  def rewrite_path(%{path: "/AAA"} = conv) do
+    %{ conv | path: "/aaa" }
+  end
+
+  def rewrite_path(conv), do: conv
+
+  @doc "Log shit"
+  def log(conv), do: IO.inspect conv
+
+  def track(%{status: 404, path: path} = conv) do
+    IO.puts "Nigga, things get outta hand: '#{path}' cannot be served'"
+    conv
+  end
+
+  def track(conv), do: conv
 
   def parse(request) do
     [method, path, _] =
@@ -22,9 +40,6 @@ defmodule Servy.Handler do
 
     %{ method: method, path: path, status: nil, resp_body: "" }
   end
-
-  @doc "Log when shit hits the fan"
-  def log(conv), do: IO.inspect conv
 
   def route(%{ method: "GET", path: "/aaa" } = conv), do: %{ conv | status: 200, resp_body: "Crap van AAA" }
 
@@ -39,6 +54,8 @@ defmodule Servy.Handler do
     |> handle_read(conv)
   end
 
+  def route(%{ path: path } = conv), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
+
   def handle_read({ :ok, contents }, conv) do
     %{ conv | status: 200, resp_body: contents }
   end
@@ -50,8 +67,6 @@ defmodule Servy.Handler do
   def handle_read({ :error, reason }, conv) do
     %{ conv | status: 500, resp_body: "Something went completely wrong. Wanna know why? Here: #{reason}" }
   end
-
-  def route(%{ path: path } = conv), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
 
   def format_response(conv) do
     """
