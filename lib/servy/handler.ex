@@ -1,4 +1,10 @@
 defmodule Servy.Handler do
+  @moduledoc """
+  Hey you the rocksteady crew
+  """
+
+  @pages_path Path.expand("../../pages", __DIR__)
+
   def handle(request) do
     request
     |> parse
@@ -17,6 +23,7 @@ defmodule Servy.Handler do
     %{ method: method, path: path, status: nil, resp_body: "" }
   end
 
+  @doc "Log when shit hits the fan"
   def log(conv), do: IO.inspect conv
 
   def route(%{ method: "GET", path: "/aaa" } = conv), do: %{ conv | status: 200, resp_body: "Crap van AAA" }
@@ -26,7 +33,7 @@ defmodule Servy.Handler do
   def route(%{ method: "GET", path: "/bbb/" <> id } = conv), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: KjanseBEER nr#{id}.  " }
 
   def route(%{ method: "GET", path: "/about" } = conv) do
-    Path.expand("../../pages", __DIR__)
+    @pages_path
     |> Path.join("about.html")
     |> File.read
     |> handle_read(conv)
