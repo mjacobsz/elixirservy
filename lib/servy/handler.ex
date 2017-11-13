@@ -2,6 +2,8 @@ defmodule Servy.Handler do
   @moduledoc """
   Hey you the rocksteady crew
   """
+  import Servy.Plugins, only: [rewrite_path: 1, log: 1, track: 1]
+  import Servy.Parser,  only: [parse: 1]
 
   @pages_path Path.expand("../../pages", __DIR__)
 
@@ -15,33 +17,7 @@ defmodule Servy.Handler do
     |> format_response
   end
 
-  def rewrite_path(%{path: "/AAA"} = conv) do
-    %{ conv | path: "/aaa" }
-  end
-
-  def rewrite_path(conv), do: conv
-
-  @doc "Log shit"
-  def log(conv), do: IO.inspect conv
-
-  def track(%{status: 404, path: path} = conv) do
-    IO.puts "Nigga, things get outta hand: '#{path}' cannot be served'"
-    conv
-  end
-
-  def track(conv), do: conv
-
-  def parse(request) do
-    [method, path, _] =
-      request
-      |> String.split("\n")
-      |> List.first
-      |> String.split(" ")
-
-    %{ method: method, path: path, status: nil, resp_body: "" }
-  end
-
-  def route(%{ method: "GET", path: "/aaa" } = conv), do: %{ conv | status: 200, resp_body: "Crap van AAA" }
+  def route(%{ method: "GET", path: "/aaa" } = conv), do: %{ conv | status: 200, resp_body: "Crap van AAAaars" }
 
   def route(%{ method: "GET", path: "/bbb" } = conv), do: %{ conv | status: 200, resp_body: "Crap van BBB" }
 
