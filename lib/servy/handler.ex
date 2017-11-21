@@ -19,20 +19,20 @@ defmodule Servy.Handler do
     |> format_response
   end
 
-  def route(%Conv{ method: "GET", path: "/aaa" } = conv), do: %{ conv | status: 200, resp_body: "Crap van AAAaars" }
+  def route( %Conv{ method: "GET", path: "/aaa" } = conv ), do: %{ conv | status: 200, resp_body: "Crap van AAAaars" }
 
-  def route(%Conv{ method: "GET", path: "/bbb" } = conv), do: %{ conv | status: 200, resp_body: "Crap van BBB" }
+  def route( %Conv{ method: "GET", path: "/bbb" } = conv ), do: %{ conv | status: 200, resp_body: "Crap van BBB" }
 
-  def route(%Conv{ method: "GET", path: "/bbb/" <> id } = conv), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: KjanseBEER nr#{id}.  " }
+  def route( %Conv{ method: "GET", path: "/bbb/" <> id } = conv ), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: KjanseBEER nr#{id}.  " }
 
-  def route(%Conv{ method: "GET", path: "/about" } = conv) do
+  def route( %Conv{ method: "GET", path: "/about" } = conv ) do
     @pages_path
     |> Path.join("about.html")
     |> File.read
     |> handle_read(conv)
   end
 
-  def route(%{ path: path } = conv), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
+  def route( %{ path: path } = conv ), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
 
   def handle_read({ :ok, contents }, conv) do
     %{ conv | status: 200, resp_body: contents }
