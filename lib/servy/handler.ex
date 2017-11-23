@@ -32,6 +32,10 @@ defmodule Servy.Handler do
     |> handle_read(conv)
   end
 
+  def route( %Conv{ method: "POST", path: "/bears" } = conv ) do
+    %{ conv | status: 201, resp_body: "I created your fucking bear asshole" }
+  end
+
   def route( %{ path: path } = conv ), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
 
   def handle_read({ :ok, contents }, conv) do
@@ -63,5 +67,16 @@ Host: example.com
 User-agent: ExampleBrowser/1.0
 Accept: */*
 
+"""
+
+request = """
+POST /bears HTTP/1.1
+Host: example.com
+User-agent: ExampleBrowser/1.0
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+Content-Length
+
+foo=Bar&lol=cat
 """
 IO.puts Servy.Handler.handle(request)
