@@ -10,7 +10,10 @@ defmodule Servy.Plugins do
   def rewrite_path( %Conv{} = conv ), do: conv
 
   @doc "Log shit"
-  def log( %Conv{} = conv ), do: IO.inspect conv
+  def log( %Conv{} = conv ) do
+    IO.puts "\n*** This is conv: #{inspect conv}\n"
+    conv
+  end
 
   @doc "Track them 404 bitches"
   def track( %{status: 404, path: path} = conv ) do
@@ -18,6 +21,9 @@ defmodule Servy.Plugins do
     conv
   end
 
-  @doc "Dont do nuthin' when no 404"
-  def track( %Conv{} = conv ), do: conv
+  @doc "Dont do nuthin' when no 404, expcet for loggin'"
+  def track( %Conv{} = conv ) do
+    IO.puts "\n*** Final conv before formatting: #{inspect conv}\n"
+    conv
+  end
 end

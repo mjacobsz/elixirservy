@@ -1,5 +1,6 @@
 defmodule Servy.Conv do
-  defstruct method: "",
+  defstruct headers: %{},
+            method: "",
             params: %{},
             path: "",
             resp_body: "",

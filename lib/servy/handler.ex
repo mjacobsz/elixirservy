@@ -74,8 +74,8 @@ POST /bears HTTP/1.1
 Host: example.com
 User-agent: ExampleBrowser/1.0
 Accept: */*
-Content-Type: application/x-www-form-urlencoded
-Content-Length
+Content-Type: application/x-penis
+Content-Length: 21
 
 foo=Bar&lol=cat
 """
