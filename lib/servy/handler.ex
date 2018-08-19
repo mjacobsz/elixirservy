@@ -62,14 +62,6 @@ defmodule Servy.Handler do
 end
 
 request = """
-GET /aaa HTTP/1.1
-Host: example.com
-User-agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-
-request = """
 POST /bears HTTP/1.1
 Host: example.com
 User-agent: ExampleBrowser/1.0
@@ -80,3 +72,4 @@ Content-Length: 21
 foo=Bar&lol=cat
 """
 IO.puts Servy.Handler.handle(request)
+IO.puts "All is still good"
