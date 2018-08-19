@@ -25,7 +25,7 @@ defmodule Servy.Handler do
   def route( %Conv{ method: "GET", path: "/bears" } = conv ), do: BearController.index(conv)
 
   def route( %Conv{ method: "GET", path: "/bears/" <> id } = conv ) do
-    params = Map.put(conv.params, id: id)
+    params = Map.put(conv.params, :id, id)
     BearController.show(conv, params)
   end
 
@@ -64,6 +64,34 @@ defmodule Servy.Handler do
     """
   end
 end
+
+
+request = """
+GET /aaa HTTP/1.1
+Host: example.com
+User-agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+IO.puts Servy.Handler.handle(request)
+
+request = """
+GET /bears HTTP/1.1
+Host: example.com
+User-agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+IO.puts Servy.Handler.handle(request)
+
+request = """
+GET /bears/77 HTTP/1.1
+Host: example.com
+User-agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+IO.puts Servy.Handler.handle(request)
 
 request = """
 POST /bears HTTP/1.1
