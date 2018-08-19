@@ -6,6 +6,7 @@ defmodule Servy.Handler do
   import Servy.Parser,  only: [parse: 1]
 
   alias Servy.Conv
+  alias Servy.BearController
 
   @pages_path Path.expand("../../pages", __DIR__)
 
@@ -21,9 +22,12 @@ defmodule Servy.Handler do
 
   def route( %Conv{ method: "GET", path: "/aaa" } = conv ), do: %{ conv | status: 200, resp_body: "Crap van AAAaars" }
 
-  def route( %Conv{ method: "GET", path: "/bbb" } = conv ), do: %{ conv | status: 200, resp_body: "Crap van BBB" }
+  def route( %Conv{ method: "GET", path: "/bears" } = conv ), do: BearController.index(conv)
 
-  def route( %Conv{ method: "GET", path: "/bbb/" <> id } = conv ), do: %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: KjanseBEER nr#{id}.  " }
+  def route( %Conv{ method: "GET", path: "/bears/" <> id } = conv ) do
+    params = Map.put(conv.params, id: id)
+    BearController.show(conv, params)
+  end
 
   def route( %Conv{ method: "GET", path: "/about" } = conv ) do
     @pages_path
@@ -33,7 +37,7 @@ defmodule Servy.Handler do
   end
 
   def route( %Conv{ method: "POST", path: "/bears" } = conv ) do
-    %{ conv | status: 201, resp_body: "I created your fucking bear asshole" }
+    BearController.create(conv, conv.params)
   end
 
   def route( %{ path: path } = conv ), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
@@ -66,10 +70,10 @@ POST /bears HTTP/1.1
 Host: example.com
 User-agent: ExampleBrowser/1.0
 Accept: */*
-Content-Type: application/x-penis
+Content-Type: application/x-www-form-urlencoded
 Content-Length: 21
 
-foo=Bar&lol=cat
+name=Bar&type=cat
 """
 IO.puts Servy.Handler.handle(request)
 IO.puts "All is still good"
