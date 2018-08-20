@@ -20,7 +20,7 @@ defmodule Servy.Handler do
     |> format_response
   end
 
-  def route( %Conv{ method: "GET", path: "/aaa" } = conv ), do: %{ conv | status: 200, resp_body: "Crap van AAAaars" }
+  def route( %Conv{ method: "GET", path: "/wildthings" } = conv ), do: %{ conv | status: 200, resp_body: "Crap van AAAaars, so that means wildlife crap" }
 
   # INDEX
   def route( %Conv{ method: "GET", path: "/bears" } = conv ), do: BearController.index(conv)
@@ -70,7 +70,25 @@ end
 
 
 request = """
-GET /aaa HTTP/1.1
+GET /wildlife HTTP/1.1
+Host: example.com
+User-agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+IO.puts Servy.Handler.handle(request)
+
+request = """
+GET /thisshouldthrowa404 HTTP/1.1
+Host: example.com
+User-agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+IO.puts Servy.Handler.handle(request)
+
+request = """
+GET /wildthings HTTP/1.1
 Host: example.com
 User-agent: ExampleBrowser/1.0
 Accept: */*

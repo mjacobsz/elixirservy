@@ -2,8 +2,8 @@ defmodule Servy.Plugins do
   alias Servy.Conv
 
   @doc "rewrite 'AAA' to regular 'aaa'"
-  def rewrite_path( %Conv{path: "/AAA"} = conv ) do
-    %{ conv | path: "/aaa" }
+  def rewrite_path( %Conv{path: "/wildlife"} = conv ) do
+    %{ conv | path: "/wildthings" }
   end
 
   @doc "Otherwise, just go pass it further in the chain"
@@ -17,7 +17,7 @@ defmodule Servy.Plugins do
 
   @doc "Track them 404 bitches"
   def track( %{status: 404, path: path} = conv ) do
-    IO.puts "Nigga, things get outta hand: '#{path}' cannot be served'"
+    IO.puts "Nigga, things get outta hand: '#{path}' cannot be served cuz it aint there'"
     conv
   end
 
