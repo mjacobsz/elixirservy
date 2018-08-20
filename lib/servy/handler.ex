@@ -22,11 +22,18 @@ defmodule Servy.Handler do
 
   def route( %Conv{ method: "GET", path: "/aaa" } = conv ), do: %{ conv | status: 200, resp_body: "Crap van AAAaars" }
 
+  # INDEX
   def route( %Conv{ method: "GET", path: "/bears" } = conv ), do: BearController.index(conv)
 
+  # SHOW
   def route( %Conv{ method: "GET", path: "/bears/" <> id } = conv ) do
-    params = Map.put(conv.params, :id, id)
+    params = Map.put(conv.params, "id", id)
     BearController.show(conv, params)
+  end
+
+  # CREATE
+  def route( %Conv{ method: "POST", path: "/bears" } = conv ) do
+    BearController.create(conv, conv.params)
   end
 
   def route( %Conv{ method: "GET", path: "/about" } = conv ) do
@@ -34,10 +41,6 @@ defmodule Servy.Handler do
     |> Path.join("about.html")
     |> File.read
     |> handle_read(conv)
-  end
-
-  def route( %Conv{ method: "POST", path: "/bears" } = conv ) do
-    BearController.create(conv, conv.params)
   end
 
   def route( %{ path: path } = conv ), do: %{ conv | status: 404, resp_body: "There's no '#{path}' here, mofo" }
