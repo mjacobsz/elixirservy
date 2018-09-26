@@ -66,63 +66,67 @@ defmodule Servy.Handler do
     #{conv.resp_body}
     """
   end
+
+  def do_all_shit do
+
+    request = """
+    GET /wildlife HTTP/1.1
+    Host: example.com
+    User-agent: ExampleBrowser/1.0
+    Accept: */*
+
+    """
+    IO.puts Servy.Handler.handle(request)
+
+    request = """
+    GET /thisshouldthrowa404 HTTP/1.1
+    Host: example.com
+    User-agent: ExampleBrowser/1.0
+    Accept: */*
+
+    """
+    IO.puts Servy.Handler.handle(request)
+
+    request = """
+    GET /wildthings HTTP/1.1
+    Host: example.com
+    User-agent: ExampleBrowser/1.0
+    Accept: */*
+
+    """
+    IO.puts Servy.Handler.handle(request)
+
+    request = """
+    GET /bears HTTP/1.1
+    Host: example.com
+    User-agent: ExampleBrowser/1.0
+    Accept: */*
+
+    """
+    IO.puts Servy.Handler.handle(request)
+
+    request = """
+    GET /bears/77 HTTP/1.1
+    Host: example.com
+    User-agent: ExampleBrowser/1.0
+    Accept: */*
+
+    """
+    IO.puts Servy.Handler.handle(request)
+
+    request = """
+    POST /bears HTTP/1.1
+    Host: example.com
+    User-agent: ExampleBrowser/1.0
+    Accept: */*
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 21
+
+    name=Bar&type=cat
+    """
+    IO.puts Servy.Handler.handle(request)
+    IO.puts "All is still good!"
+  end
 end
 
-
-request = """
-GET /wildlife HTTP/1.1
-Host: example.com
-User-agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-IO.puts Servy.Handler.handle(request)
-
-request = """
-GET /thisshouldthrowa404 HTTP/1.1
-Host: example.com
-User-agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-IO.puts Servy.Handler.handle(request)
-
-request = """
-GET /wildthings HTTP/1.1
-Host: example.com
-User-agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-IO.puts Servy.Handler.handle(request)
-
-request = """
-GET /bears HTTP/1.1
-Host: example.com
-User-agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-IO.puts Servy.Handler.handle(request)
-
-request = """
-GET /bears/77 HTTP/1.1
-Host: example.com
-User-agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-IO.puts Servy.Handler.handle(request)
-
-request = """
-POST /bears HTTP/1.1
-Host: example.com
-User-agent: ExampleBrowser/1.0
-Accept: */*
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 21
-
-name=Bar&type=cat
-"""
-IO.puts Servy.Handler.handle(request)
-IO.puts "All is still good"
+Servy.Handler.do_all_shit()
