@@ -3,8 +3,13 @@ defmodule Servy.BearController do
   alias Servy.Wildthings
 
   def index( %Conv{ method: "GET", path: "/bears" } = conv ) do
-    bears = Wildthings.list_bears()
-    %{ conv | status: 200, resp_body: "Bears index is working" }
+    items =
+      Wildthings.list_bears()
+      |> Enum.filter(fn(b) -> b.type == "Grizzly" end)
+      |> Enum.sort(fn(b1, b2) -> b1.name <= b2.name end)
+      |> Enum.map(fn(b) -> "<li>#{b.name} - #{b.type}</li>" end)
+
+    %{ conv | status: 200, resp_body: "<ul>#{items}</ul>" }
   end
 
   def show( %Conv{ method: "GET" } = conv, %{"id" => id} ) do
