@@ -13,7 +13,8 @@ defmodule Servy.BearController do
   end
 
   def show( %Conv{ method: "GET" } = conv, %{"id" => id} ) do
-    %{ conv | status: 200, resp_body: "I found your fucking bear. Here it is: KjanseBEER nr#{id}. " }
+    bear = Wildthings.get_bear(id)
+    %{ conv | status: 200, resp_body: "<h1>Here's your bear, sir: #{id}. #{bear.name} </h1>" }
   end
 
   def create( conv, %{ "name" => name, "type" => type } = params ) do

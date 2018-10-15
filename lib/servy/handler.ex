@@ -106,7 +106,7 @@ defmodule Servy.Handler do
     IO.puts Servy.Handler.handle(request)
 
     request = """
-    GET /bears/77 HTTP/1.1
+    GET /bears/7 HTTP/1.1
     Host: example.com
     User-agent: ExampleBrowser/1.0
     Accept: */*
