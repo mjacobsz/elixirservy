@@ -88,15 +88,6 @@ defmodule Servy.Handler do
     IO.puts Servy.Handler.handle(request)
 
     request = """
-    GET /wildthings HTTP/1.1
-    Host: example.com
-    User-agent: ExampleBrowser/1.0
-    Accept: */*
-
-    """
-    IO.puts Servy.Handler.handle(request)
-
-    request = """
     GET /bears HTTP/1.1
     Host: example.com
     User-agent: ExampleBrowser/1.0
