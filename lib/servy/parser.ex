@@ -12,19 +12,19 @@ defmodule Servy.Parser do
     %Conv{ method: method, path: path, params: params, headers: headers }
   end
 
-  defp parse_headers([head|tail], headers) do
+  def parse_headers([head|tail], headers) do
     [key, value] = String.split(head, ": ")
     headers = Map.put(headers, key, value)
     parse_headers(tail, headers)
   end
 
-  defp parse_headers([], headers), do: headers
+  def parse_headers([], headers), do: headers
 
-  defp parse_params("application/x-www-form-urlencoded", params) do
+  def parse_params("application/x-www-form-urlencoded", params) do
     params
     |> String.trim
     |> URI.decode_query
   end
 
-  defp parse_params(_, _), do: %{}
+  def parse_params(_, _), do: %{}
 end
